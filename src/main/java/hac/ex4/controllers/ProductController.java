@@ -35,9 +35,9 @@ public class ProductController {
         return "admin/index";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/admin/add")
     public String showSignUpForm(Product product, Model model) {
-        return "add-product";
+        return "admin/add-product";
     }
 
     @PostMapping("/addproduct")
