@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 
 
 @Entity
-public class Products {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,9 +34,9 @@ public class Products {
     @Max(value=100, message="must be lower or equal than 100")
     private double discount ;
 
-    public Products() {}
+    public Product() {}
 
-    public Products(String name, String image, int quantity, double price, double discount) {
+    public Product(String name, String image, int quantity, double price, double discount) {
         this.name = name;
         this.image = image;
         this.quantity = quantity;
