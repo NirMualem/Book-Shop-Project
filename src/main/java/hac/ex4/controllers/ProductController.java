@@ -2,6 +2,7 @@ package hac.ex4.controllers;
 
 import hac.ex4.repo.Product;
 import hac.ex4.repo.ProductRepository;
+import hac.ex4.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,17 +22,13 @@ public class ProductController {
 
     /* inject via its type the product repo bean - a singleton */
     @Autowired
-    private ProductRepository repository;
-
-    private ProductRepository getRepo() {
-        return repository;
-    }
+    private ProductService productService;
 
     @GetMapping("/admin")
     public String main(Product product, Model model) {
 
         // the name "Products"  is bound to the VIEW
-        model.addAttribute("products", getRepo().findAll());
+        model.addAttribute("products", productService.getProducts());
         return "admin/index";
     }
 
@@ -46,8 +43,8 @@ public class ProductController {
             return "admin/add-product";
         }
 
-        getRepo().save(product);
-        model.addAttribute("products", getRepo().findAll());
+        productService.saveProduct(product);
+        model.addAttribute("products", productService.getProducts());
         return "admin/index";
     }
 
@@ -68,7 +65,7 @@ public class ProductController {
     @PostMapping("/edit")
     public String editProduct(@RequestParam("id") long id, Model model) {
 
-        Product product = getRepo().findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
+        Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
 
         // the name "Product"  is bound to the VIEW
         model.addAttribute("product", product);
@@ -81,22 +78,18 @@ public class ProductController {
             product.setId(id);
             return "admin/update-product";
         }
-
-        getRepo().save(product);
-        model.addAttribute("products", getRepo().findAll());
+        productService.addProduct(product);
+        model.addAttribute("products", productService.getProducts());
         return "admin/index";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") long id, Model model) {
 
-        Product product = getRepo()
-                .findById(id)
-                .orElseThrow(
-                        () -> new IllegalArgumentException("Invalid user Id:" + id)
-                );
-        getRepo().delete(product);
-        model.addAttribute("products", getRepo().findAll());
+        Product product = productService.getProduct(id).orElseThrow(
+                        () -> new IllegalArgumentException("Invalid user Id:" + id));
+        productService.deleteProduct(product);
+        model.addAttribute("products", productService.getProducts());
         return "admin/index";
     }
 
@@ -111,7 +104,7 @@ public class ProductController {
     @GetMapping(value="/getjson")
     public @ResponseBody List<Product> getAll() {
 
-        return getRepo().findAll();
+        return productService.getProducts();
     }
 }
 
