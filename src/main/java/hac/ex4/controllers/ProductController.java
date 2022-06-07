@@ -1,7 +1,6 @@
 package hac.ex4.controllers;
 
 import hac.ex4.repo.Product;
-import hac.ex4.repo.ProductRepository;
 import hac.ex4.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,10 +14,6 @@ import java.util.List;
 
 @Controller
 public class ProductController {
-
-//    /* set a default value from the application.properties  file */
-//    @Value( "${demo.coursename}" )
-//    private String someProperty;
 
     /* inject via its type the product repo bean - a singleton */
     @Autowired
