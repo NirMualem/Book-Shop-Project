@@ -38,4 +38,7 @@ public class ProductService {
     public List<Product> getProducts() {
         return repository.findAll();
     }
+    public List<Product> searchByTitle(String title) {
+        return repository.findByName(title);
+    }
 }

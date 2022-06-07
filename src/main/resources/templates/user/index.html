@@ -12,19 +12,31 @@
 <body>
 <div class="container">
     <div class="row" style="display: flex; justify-content: center;align-items: center;">
+
         <div th:switch="${products.size()}" class="col-md-6">
             <h2 th:case="0">store out of stocks. try again later</h2>
 
             <div th:case="*">
                 <h2 class="my-5">hot deal books</h2>
+
+
+                <form th:action="@{/user/search}" method="post">
+                    <textarea name="msg" cols="40" rows="2"></textarea>
+                    <br> <input type="submit" value="Save Message" />
+                </form>
+
                 <div th:each="product : ${products}">
+                    <div class="row" >
+                    <div class="col-sm-6">
                 <div class="card" style="width: 18rem;">
                     <img class="card-img-top" src="${product.image}" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title">${product.name}</h5>
-                        <p class="card-text" style="text-decoration: line-through">${product.price}</p>
-                        <p class="card-text">${product.price - product.price * product.discount/100}</p>
-                        <p class="my-5"><a href="#" class="btn btn-primary"> add a new book<i class="fa fa-book ml-2"></i></a></p>
+                        <h5 class="card-title" th:text="${product.name}"></h5>
+                        <p class="card-text" th:text="${product.price}" style="text-decoration: line-through">$</p>
+                        <p class="card-text"  th:text="${product.price - product.price * product.discount/100}"></p>
+                        <p class="my-5"><a href="#" class="btn btn-primary"> add to cart<i class="fa fa-book ml-2"></i></a></p>
+                    </div>
+                    </div>
                     </div>
                 </div>
                 </div>
