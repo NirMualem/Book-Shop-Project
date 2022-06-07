@@ -26,7 +26,6 @@ public class ProductController {
 
     @GetMapping("/admin")
     public String main(Product product, Model model) {
-
         // the name "Products"  is bound to the VIEW
         model.addAttribute("products", productService.getProducts());
         return "admin/index";
@@ -37,34 +36,24 @@ public class ProductController {
         return "admin/add-product";
     }
 
-    @PostMapping("/addproduct")
+    @PostMapping("/admin/addproduct")
     public String addProduct(@Valid Product product, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "admin/add-product";
         }
 
-        productService.saveProduct(product);
-        model.addAttribute("products", productService.getProducts());
+        try{
+            productService.saveProduct(product);
+        } catch (Exception e) {
+            model.addAttribute("message", "Sorry we could not perform your request!");
+        } finally {
+            model.addAttribute("products", productService.getProducts());
+    }
         return "admin/index";
     }
 
-    /*
-     REST style controller
-
-    @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") long id, Model model) {
-
-        User user = getRepo().findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-
-        // the name "user"  is bound to the VIEW
-        model.addAttribute("user", user);
-        return "update-user";
-    }
-    */
-
-    @PostMapping("/edit")
+    @PostMapping("/admin/edit")
     public String editProduct(@RequestParam("id") long id, Model model) {
-
         Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
 
         // the name "Product"  is bound to the VIEW
@@ -72,7 +61,7 @@ public class ProductController {
         return "admin/update-product";
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("/admin/update/{id}")
     public String updateUser(@PathVariable("id") long id, @Valid Product product, BindingResult result, Model model) {
         if (result.hasErrors()) {
             product.setId(id);
@@ -83,7 +72,7 @@ public class ProductController {
         return "admin/index";
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/admin/delete/{id}")
     public String deleteUser(@PathVariable("id") long id, Model model) {
 
         Product product = productService.getProduct(id).orElseThrow(
@@ -93,7 +82,7 @@ public class ProductController {
         return "admin/index";
     }
 
-    @GetMapping(value="/json")
+    @GetMapping(value="/admin/json")
     public String json (Model model) {
         return "json";
     }
@@ -101,7 +90,7 @@ public class ProductController {
      * a sample controller return the content of the DB in JSON format
      * @return
      */
-    @GetMapping(value="/getjson")
+    @GetMapping(value="/admin/getjson")
     public @ResponseBody List<Product> getAll() {
 
         return productService.getProducts();

@@ -1,5 +1,6 @@
 package hac.ex4.repo;
 
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.Entity;
@@ -21,7 +22,7 @@ public class Product {
     @NotEmpty(message = "Name is mandatory")
     private String name;
 
-    @Value("https://islandpress.org/sites/default/files/default_book_cover_2015.jpg")
+    @Value("${https://islandpress.org/sites/default/files/default_book_cover_2015.jpg}")
     private String image;
 
     @Min(value=0, message="must be equal or greater than 0 , and integer")
