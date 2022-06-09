@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -21,11 +22,13 @@ public class ShopController {
     public String main(Product product, Model model) {
         // the name "Products"  is bound to the VIEW
         model.addAttribute("products", productService.getProducts());
+        model.addAttribute("topProducts", productService.getProducts());
+
         return "user/index";
     }
 
-    @GetMapping("/user/search")
-    public String searchBooks(@RequestParam("title") String title, Model model) {
+    @PostMapping("/user/search")
+    public String searchBooks(@RequestParam("title") String title,Model model) {
 
         model.addAttribute("products",  productService.searchByTitle(title));
         return "user/index";

@@ -36,6 +36,7 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
                 // custom error page for exceptions
                 .and()
                 .exceptionHandling()
