@@ -20,8 +20,7 @@ public class Cart implements Serializable {
         this.productsCart = new ArrayList<>();
     }
 
-    public ArrayList<Product>  getCart() {
-        System.out.println(productsCart);
+    public ArrayList<Product> getCart() {
         return productsCart;
     }
 
@@ -30,8 +29,8 @@ public class Cart implements Serializable {
     }
 
     public void add (Product product) {
+        productsCart.add(new Product(product.getName() , product.getImage(), product.getQuantity(),  product.getPrice(),  product.getDiscount()));
         productsCart.add(product);
-        System.out.println(productsCart);
     }
 
     /* BEAN using ctor - session scope */

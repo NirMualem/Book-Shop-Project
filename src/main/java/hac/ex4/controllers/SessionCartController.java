@@ -23,21 +23,22 @@ public class SessionCartController {
     @Resource(name = "sessionBean")
     private Cart sessionCart;
 
-    @PostMapping("/addProduct")
-    public String addProduct(@RequestParam("id") long id, Model model) {
+    @PostMapping("/user/addToCart")
+    public String addToCart(@RequestParam("id") long id, Model model) {
+
         Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         sessionCart.add(product);
-        System.out.println(product);
-        return "redirect:/user/index";
+
+        return "redirect:/";
     }
 
-    @GetMapping("/payment")
+    @GetMapping("/user/payment")
     public String process(Model model) {
         model.addAttribute("sessionCart", sessionCart.getCart());
         return "/user/payment";
     }
 
-    @PostMapping("/destroy")
+    @PostMapping("/user/destroy")
     public String destroySession(HttpServletRequest request) {
         request.getSession().invalidate();
         return "redirect:/user/index";
