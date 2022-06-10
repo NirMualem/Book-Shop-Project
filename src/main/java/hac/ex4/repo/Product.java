@@ -7,9 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 
 
 @Entity
@@ -22,17 +20,17 @@ public class Product {
     @NotEmpty(message = "Name is mandatory")
     private String name;
 
-    @Value("${https://islandpress.org/sites/default/files/default_book_cover_2015.jpg}")
+    @URL(message = "url must be valid. keep empty for default image")
     private String image;
 
-    @Min(value=0, message="must be equal or greater than 0 , and integer")
+    @PositiveOrZero(message="must be equal or greater than 0 , and integer")
     private int quantity;
 
-    @Min(value=0L, message="must be greater than 0")
+    @Positive(message="must be greater than 0")
     private double price;
 
-    @Min(value=0L, message="must be greater than 0")
-    @Max(value=100, message="must be lower or equal than 100")
+    @PositiveOrZero(message="must be between 0 to 100")
+    @Max(value=100, message="must be between 0 to 100")
     private double discount ;
 
     public Product() {}
