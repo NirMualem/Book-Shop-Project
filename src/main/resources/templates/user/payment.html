@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>take a look get a book.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="row" style="display: flex; justify-content: center;align-items: center;">
+
+        <div th:switch="${sessionCart.size()}">
+            <h2 th:case="0">the cart is empty</h2>
+
+            <div th:case="*">
+                <h2 style="text-align: center";>take a look and get a book</h2>
+
+                <div class="card" style = "margin:5px; width:100%">
+                    <div class="card-body">
+                        <div>
+                            <h3> All books </h3>
+                        </div>
+                            <div th:each="prodInCart : ${sessionCart}">
+                                <div class="col sm-12" style ="margin:10px">
+                                    <div class="card" style="width: 100%;height:100%;">
+                                        <img class="card-img-top" src="${prodInCart.image}" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h5 class="card-title" th:text="${prodInCart.name}"></h5>
+                                            <p class="card-text" th:text="${prodInCart.price}" style="text-decoration: line-through">$</p>
+                                            <p class="card-text"  th:text="${prodInCart.price - prodInCart.price * prodInCart.discount/100}"></p>
+                                            <p class="my-5"><a href="#" class="btn btn-primary"> add to cart<i class="fa fa-book ml-2"></i></a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

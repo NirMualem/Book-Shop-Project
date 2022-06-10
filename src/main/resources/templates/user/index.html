@@ -60,7 +60,7 @@
                                     <h5 class="card-title" th:text="${product.name}"></h5>
                                     <p class="card-text" th:text="${product.price}" style="text-decoration: line-through">$</p>
                                     <p class="card-text"  th:text="${product.price - product.price * product.discount/100}"></p>
-                                    <p class="my-5"><a href="#" class="btn btn-primary"> add to cart<i class="fa fa-book ml-2"></i></a></p>
+                                    <p class="my-5"><a th:href="@{/addProduct/{id}(id=${product.id})}" class="btn btn-primary"> add to cart<i class="fa fa-book ml-2"></i></a></p>
                                 </div>
                             </div>
                         </div>

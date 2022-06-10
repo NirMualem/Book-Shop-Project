@@ -21,15 +21,17 @@ public class Cart implements Serializable {
     }
 
     public ArrayList<Product>  getCart() {
+        System.out.println(productsCart);
         return productsCart;
     }
 
-    public void setProducts(ArrayList<Product>  products) {
+    public void setCart(ArrayList<Product>  products) {
         this.productsCart = products;
     }
 
     public void add (Product product) {
         productsCart.add(product);
+        System.out.println(productsCart);
     }
 
     /* BEAN using ctor - session scope */

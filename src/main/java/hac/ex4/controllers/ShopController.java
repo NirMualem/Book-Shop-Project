@@ -33,5 +33,6 @@ public class ShopController {
         model.addAttribute("products",  productService.searchByTitle(title));
         return "user/index";
     }
+
 }
 
