@@ -34,16 +34,15 @@ public class Cart implements Serializable {
         if(productsCart.size()==0)
         {
             productsCart.add(product);
-
         }
         else {
             for (Product prod : productsCart) {
                 if (product.getId() == prod.getId()) {
-                    prod.setCount(prod.getCount() + 1);
-                } else {
-                    productsCart.add(product);
+                    product.setCount(product.getCount() + 1);
+                    return;
                 }
             }
+            productsCart.add(product);
         }
     }
 

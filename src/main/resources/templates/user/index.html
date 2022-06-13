@@ -18,13 +18,13 @@
 
             <div th:case="*">
                 <h2 style="text-align: center";>take a look and get a book</h2>
-                <div class="row" style="flex-direction: row ; align-content: space-between">
+                <div class="row" style="flex-direction: row ; justify-content: space-between">
                     <form th:action="@{/user/search}" method="post">
                         <input name="title">
                         <input type="submit" value="search" />
                     </form>
                     <div>
-                    <p style=""><a href="/payment" class="btn btn-primary"><i class="fa fa-cart-arrow-down"></i></a></p>
+                    <p style=""><a href="/payment" class="btn btn-primary"><i style="margin-right: 10px" th:text="${sumOfCart}"></i><i class="fa fa-cart-arrow-down" ></i></a></p>
                     </div>
                 </div>
                 <div class="card" style = "margin:5px">

@@ -39,7 +39,8 @@
                             </thead>
                             <tbody>
                             <tr th:each="prodInCart : ${sessionCart}">
-                                <td th:text="${prodInCart.image}"></td>
+                                <td><img class="card-img-top" th:src="${prodInCart.image}" style="transition: all 0.3s ease-out;width: 50%;height: 15vw;object-fit: cover;">
+                                </td>
                                 <td th:text="${prodInCart.name}"></td>
                                 <td th:text="${prodInCart.price}"></td>
                                 <td class="row" >
