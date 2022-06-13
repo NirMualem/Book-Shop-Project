@@ -57,7 +57,7 @@ public class ProductController {
     }
 
     @PostMapping("/admin/update/{id}")
-    public String updateUser(@PathVariable("id") long id, @Valid Product product, BindingResult result, Model model) {
+    public String updateProduct(@PathVariable("id") long id, @Valid Product product, BindingResult result, Model model) {
         if (result.hasErrors()) {
             product.setId(id);
             return "admin/update-product";
@@ -68,10 +68,10 @@ public class ProductController {
     }
 
     @GetMapping("/admin/delete/{id}")
-    public String deleteUser(@PathVariable("id") long id, Model model) {
+    public String deleteProduct(@PathVariable("id") long id, Model model) {
 
         Product product = productService.getProduct(id).orElseThrow(
-                        () -> new IllegalArgumentException("Invalid user Id:" + id));
+                        () -> new IllegalArgumentException("Invalid Product Id:" + id));
         productService.deleteProduct(product);
         model.addAttribute("products", productService.getProducts());
         return "admin/index";
