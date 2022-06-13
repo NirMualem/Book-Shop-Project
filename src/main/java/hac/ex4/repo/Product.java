@@ -47,7 +47,6 @@ public class Product implements Serializable {
     }
 
     public Product(Product product) {
-        System.out.println("Iam here");
         this.name = product.getName();
         this.quantity = product.getQuantity();
         this.price = product.getPrice();
@@ -57,16 +56,6 @@ public class Product implements Serializable {
         this.id = product.getId() ;
     }
 
-
-//    public Product(String name, String image, int quantity, double price, double discount , long id) {
-//        this.name = name;
-//        this.quantity = quantity;
-//        this.price = price;
-//        this.discount = discount;
-//        this.image = image;
-//        this.count = 1;
-//        this.id = id;
-//    }
     //get item
     public long getId() {
         return id;

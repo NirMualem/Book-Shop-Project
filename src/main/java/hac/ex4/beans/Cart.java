@@ -31,7 +31,6 @@ public class Cart implements Serializable {
     }
 
     public void add (Product product) {
-        System.out.println(product.getId());
         if(productsCart.size()==0)
         {
             productsCart.add(product);
