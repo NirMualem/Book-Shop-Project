@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 
-
 @Entity
 public class Product implements Serializable {
 
@@ -48,6 +47,7 @@ public class Product implements Serializable {
     }
 
     public Product(Product product) {
+        System.out.println("Iam here");
         this.name = product.getName();
         this.quantity = product.getQuantity();
         this.price = product.getPrice();

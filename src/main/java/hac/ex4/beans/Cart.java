@@ -31,6 +31,7 @@ public class Cart implements Serializable {
     }
 
     public void add (Product product) {
+        System.out.println(product.getId());
         if(productsCart.size()==0)
         {
             productsCart.add(product);
@@ -38,7 +39,7 @@ public class Cart implements Serializable {
         else {
             for (Product prod : productsCart) {
                 if (product.getId() == prod.getId()) {
-                    product.setCount(product.getCount() + 1);
+                    prod.setCount(prod.getCount() + 1);
                     return;
                 }
             }
