@@ -20,7 +20,7 @@ public class Cart implements Serializable {
         this.productsCart = new ArrayList<>();
     }
 
-    public ArrayList<Product>  getCart() {
+    public ArrayList<Product> getCart() {
         System.out.println(productsCart);
         return productsCart;
     }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,12 +28,15 @@ public class SessionCartController {
     public String addProduct(@RequestParam("id") long id, Model model) {
         Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         sessionCart.add(product);
+        model.addAttribute("products", productService.getProducts());
+        System.out.println("i am  here");
         System.out.println(product);
-        return "redirect:/user/index";
+        return "redirect:/";
     }
 
     @GetMapping("/payment")
     public String process(Model model) {
+        System.out.println(sessionCart.getCart());
         model.addAttribute("sessionCart", sessionCart.getCart());
         return "/user/payment";
     }
