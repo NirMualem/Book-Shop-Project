@@ -38,6 +38,10 @@ public class ProductService {
     public List<Product> getProducts() {
         return repository.findAll();
     }
+    public List<Product> getTopDiscountProducts() {
+        return repository.findFirst5ByOrderByDiscountDesc();
+    }
+
     public List<Product> searchByTitle(String title) {
         return repository.findByName(title);
     }

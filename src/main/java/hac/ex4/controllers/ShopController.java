@@ -22,7 +22,7 @@ public class ShopController {
     public String main(Product product, Model model) {
         // the name "Products"  is bound to the VIEW
         model.addAttribute("products", productService.getProducts());
-        model.addAttribute("topProducts", productService.getProducts());
+        model.addAttribute("topProducts", productService.getTopDiscountProducts());
 
         return "user/index";
     }
@@ -33,6 +33,5 @@ public class ShopController {
         model.addAttribute("products",  productService.searchByTitle(title));
         return "user/index";
     }
-
 }
 

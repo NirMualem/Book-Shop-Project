@@ -36,6 +36,10 @@ public class ProductController {
         if (result.hasErrors()) {
             return "admin/add-product";
         }
+        if(product.getImage().equals(""))
+        {
+            product.setImage("https://nnpbeta.wustl.edu/img/bookCovers/genericBookCover.jpg");
+        }
 
         try{
             productService.saveProduct(product);
