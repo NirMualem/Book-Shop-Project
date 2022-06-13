@@ -31,7 +31,25 @@ public class Cart implements Serializable {
     }
 
     public void add (Product product) {
-        productsCart.add(product);
+        if(productsCart.size()==0)
+        {
+            productsCart.add(product);
+
+        }
+        else {
+            for (Product prod : productsCart) {
+                if (product.getId() == prod.getId()) {
+                    prod.setCount(prod.getCount() + 1);
+                } else {
+                    productsCart.add(product);
+                }
+            }
+        }
+    }
+
+    public void delete (Product product) {
+        productsCart.removeIf(prod -> (prod.getId())==(product.getId()));
+        productsCart.remove(product);
         System.out.println(productsCart);
     }
 

@@ -29,8 +29,6 @@ public class SessionCartController {
         Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         sessionCart.add(product);
         model.addAttribute("products", productService.getProducts());
-        System.out.println("i am  here");
-        System.out.println(product);
         return "redirect:/";
     }
 
@@ -41,6 +39,27 @@ public class SessionCartController {
         return "/user/payment";
     }
 
+    @PostMapping("/deleteProduct")
+    public String deleteProduct(@RequestParam("id") long id, Model model) {
+        Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
+        sessionCart.delete(product);
+        return "redirect:/payment";
+    }
+
+    //for increase count of exist product in cart
+    @PostMapping("/increaseProduct")
+    public String increaseProduct(@RequestParam("id") long id, Model model) {
+        Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
+
+        return "redirect:/payment";
+    }
+
+    //for decrease count of exist product in cart
+    @PostMapping("/decreaseProduct")
+    public String decreaseProduct(@RequestParam("id") long id, Model model) {
+
+        return "redirect:/payment";
+    }
     @PostMapping("/destroy")
     public String destroySession(HttpServletRequest request) {
         request.getSession().invalidate();

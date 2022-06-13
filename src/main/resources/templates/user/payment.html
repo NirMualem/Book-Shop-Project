@@ -22,19 +22,42 @@
                 <div class="card" style = "margin:5px; width:100%">
                     <div class="card-body">
                         <div>
-                            <h3> All books </h3>
+                            <h3> check out </h3>
                         </div>
-                            <div th:each="prodInCart : ${sessionCart}">
-                                <div class="col sm-12" style ="margin:10px">
-                                    <div class="card" style="width: 100%;height:100%;">
-                                        <img class="card-img-top" src="${prodInCart.image}" alt="Card image cap">
-                                        <div class="card-body">
-                                            <h5 class="card-title" th:text="${prodInCart.name}"></h5>
-                                            <p class="card-text" th:text="${prodInCart.price}" style="text-decoration: line-through">$</p>
-                                            <p class="card-text"  th:text="${prodInCart.price - prodInCart.price * prodInCart.discount/100}"></p>
-                                        </div>
-                                    </div>
-                                </div>
+
+                        <h2 class="my-5">Users</h2>
+                        <table class="table table-striped table-responsive-md">
+                            <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>count</th>
+                                <th>total price</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="prodInCart : ${sessionCart}">
+                                <td th:text="${prodInCart.image}"></td>
+                                <td th:text="${prodInCart.name}"></td>
+                                <td th:text="${prodInCart.price}"></td>
+                                <td class="row" >
+                                    <form action="#" th:action="@{/deleteProduct}" th:object="${prodInCart}" method="post"><input type="hidden" name="id" th:value="${prodInCart.id}">
+                                        <input class="btn  btn-outline-secondary"  style="height:30px; margin:3px" type="submit" value="-" /></form>
+                                    <p  style="algin-text-align:center" th:text="${prodInCart.count}"></p>
+                                    <form action="#" th:action="@{/deleteProduct}" th:object="${prodInCart}" method="post"><input type="hidden" name="id" th:value="${prodInCart.id}">
+                                        <input class="btn  btn-outline-secondary" style="height:30px; margin:3px" type="submit" value="+" /></form>
+                                </td>
+                                <td th:text="${prodInCart.price - prodInCart.price * prodInCart.discount/100}"></td>
+                                <td th:text="${prodInCart.count * (prodInCart.price - prodInCart.price * prodInCart.discount/100)}"></td>
+                                <td>
+                                    <form action="#" th:action="@{/deleteProduct}" th:object="${prodInCart}" method="post"><input type="hidden" name="id" th:value="${prodInCart.id}">
+                                        <input class="btn btn-primary" type="submit" value="delete" /></form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                         </div>
                     </div>
                 </div>
