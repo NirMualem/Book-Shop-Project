@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 @Component
 public class Cart implements Serializable {
+
     private ArrayList<Product> productsCart;
 
     public Cart() {
