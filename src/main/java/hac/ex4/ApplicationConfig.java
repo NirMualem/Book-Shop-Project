@@ -19,7 +19,7 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
 
         auth
                 .inMemoryAuthentication()
-                .withUser("admin").password(encoder.encode("admin")).roles("ADMIN" , "USER");
+                .withUser("admin").password(encoder.encode("password")).roles("ADMIN");
     }
 
     @Override
