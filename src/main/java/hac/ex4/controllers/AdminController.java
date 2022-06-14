@@ -1,6 +1,8 @@
 package hac.ex4.controllers;
 
+import hac.ex4.repo.OrderConfirm;
 import hac.ex4.repo.Product;
+import hac.ex4.services.OrderService;
 import hac.ex4.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,16 +15,19 @@ import java.util.List;
 
 
 @Controller
-public class ProductController {
+public class AdminController {
 
     /* inject via its type the product repo bean - a singleton */
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private OrderService orderService;
+
     @GetMapping("/admin")
     public String main(Product product, Model model) {
         // the name "Products"  is bound to the VIEW
-        model.addAttribute("products", productService.getProducts());
+        model.addAttribute("products", orderService.getOrders());
         return "admin/index";
     }
 
@@ -30,6 +35,13 @@ public class ProductController {
     public String showSignUpForm(Product product, Model model) {
         return "admin/add-product";
     }
+
+    @GetMapping("/admin/orders")
+    public String showOrders(OrderConfirm order, Model model) {
+        model.addAttribute("orders", productService.getProducts());
+        return "admin/orders";
+    }
+
 
     @PostMapping("/admin/addproduct")
     public String addProduct(@Valid Product product, BindingResult result, Model model) {

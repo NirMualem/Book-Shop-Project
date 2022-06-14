@@ -1,8 +1,10 @@
 package hac.ex4.controllers;
 
 import hac.ex4.beans.Cart;
+import hac.ex4.repo.OrderConfirm;
 import hac.ex4.repo.Product;
 import hac.ex4.repo.ProductUser;
+import hac.ex4.services.OrderService;
 import hac.ex4.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,8 @@ public class ShopController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private OrderService orderService;
     // injection by ctor: match by name
     @Resource(name = "sessionBean")
     private Cart sessionCart;
@@ -55,12 +59,11 @@ public class ShopController {
         return "user/index";
     }
 
-
     public void addAttributesPayment(Model model , String errors)
     {
-        int sum = 0 ;
-        int sumWithoutDiscount = 0 ;
-        int sumOfCart = 0 ;
+        double sum = 0 ;
+        double sumWithoutDiscount = 0 ;
+        double sumOfCart = 0 ;
 
         for (ProductUser prod : sessionCart.getCart())
         {
@@ -88,6 +91,7 @@ public class ShopController {
     public String confirmOrder(HttpServletRequest request, Model model) {
         boolean canComplete = true ;
         String errors = "";
+        double sum = 0;
         ArrayList<ProductUser> cart = sessionCart.getCart() ;
         int index = 0 ;
         for (index = 0 ; index < cart.size() ; index++)
@@ -98,10 +102,18 @@ public class ShopController {
                 errors += "product \"" + product.getName() + "\" out of stock, the current max of this product is " + product.getQuantity() + ". " ;
             }
             product.setQuantity(product.getQuantity() - cart.get(index).getCount());
+            sum += ((cart.get(index).getPrice() - cart.get(index).getPrice() * cart.get(index).getDiscount()/100) * cart.get(index).getCount());
+
         }
 
         if(canComplete)
         {
+            try{
+                OrderConfirm order = new OrderConfirm(sum);
+                orderService.addOrder(order);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
             return "/user/confirmPayment";
         }
         else

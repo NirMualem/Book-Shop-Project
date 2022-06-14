@@ -5,31 +5,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-public class Order implements Serializable {
+public class OrderConfirm implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @PositiveOrZero(message="must be equal or greater than 0 , and double")
+    @Positive(message="must be greater than 0")
     private double orderSum;
 
     @CreationTimestamp
     private Timestamp orderDate;
 
-    public Order() {}
+    public OrderConfirm() {}
 
-    public Order(double orderSum,Timestamp orderDate) {
+    public OrderConfirm(double orderSum, Timestamp orderDate) {
         this.orderSum = orderSum;
         this.orderDate = orderDate;
-
     }
 
+    public OrderConfirm(double orderSum) {
+        this.orderSum = orderSum;
+        this.orderDate = new Timestamp(System.currentTimeMillis());
+    }
     //get item
     public long getId() {
         return id;

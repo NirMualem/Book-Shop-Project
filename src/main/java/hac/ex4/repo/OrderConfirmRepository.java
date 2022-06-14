@@ -2,13 +2,12 @@ package hac.ex4.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /* default scope of this Bean is "singleton" */
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderConfirmRepository extends JpaRepository<OrderConfirm, Long> {
 
-    List<Order> findAll();
+    //List<OrderConfirm> findAllOrderByDateDesc();
     /* add here the queries you may need - in addition to CRUD operations
     List<User> findUserByUserName(String userName);
     List<User> findByEmail(String email);

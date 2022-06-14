@@ -23,7 +23,6 @@ public class Cart implements Serializable {
     }
 
     public ArrayList<ProductUser> getCart() {
-        System.out.println(productsCart);
         return productsCart;
     }
 
