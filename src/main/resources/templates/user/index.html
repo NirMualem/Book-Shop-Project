@@ -17,8 +17,8 @@
             <h2 th:case="0">store out of stocks. try again later</h2>
 
             <div th:case="*">
-                <h2 style="text-align: center";>take a look and get a book</h2>
-                <div class="row" style="flex-direction: row ; justify-content: space-between">
+                <h2 style="text-align: center; font-family: cursive;font-weight: bold;";>take a look and get a book</h2>
+                <div class="row" style="flex-direction: row ; justify-content: space-between; margin: 10px">
                     <form th:action="@{/user/search}" method="post">
                         <input name="title">
                         <input type="submit" value="search" />
@@ -27,17 +27,16 @@
                     <p style=""><a href="/payment" class="btn btn-primary"><i style="margin-right: 10px" th:text="${sumOfCart}"></i><i class="fa fa-cart-arrow-down" ></i></a></p>
                     </div>
                 </div>
-                <div class="card" style = "margin:5px">
+                <div class="card" style = "margin:5px; width:100%">
                     <div class="card-body">
                 <div>
                     <h3> In sale</h3>
                 </div>
                 <div class="row">
                 <div th:each="product : ${topProducts}">
-                    <div class="column" style ="margin:10px">
-                        <div class="card" style="box-shadow: 0 15px 30px 1px grey;
-	                            background: rgba(255, 255, 255, 0.90);text-align: center;border-radius: 5px;overflow: hidden;margin: 5em auto;height: 200px;width: 300px;flex-direction: row">
-                        <img class="card-img-top" th:src="${product.image}" style="transition: all 0.3s ease-out;width: 50%;height: 15vw;object-fit: cover;">
+                    <div class="column" style ="margin-right:10px">
+                        <div class="card cardForBook">
+                        <img class="card-img-top imgCoverBook" th:src="${product.image}" >
                             <div class="card-body">
                             <h5 class="card-title" th:text="${product.name}"></h5>
                             <p class="card-text" th:text="${product.price}" style="text-decoration: line-through">$</p>
@@ -58,10 +57,9 @@
                 </div>
                 <div class="row">
                     <div th:each="product : ${products}">
-                        <div class="column" style ="margin:10px">
-                            <div class="card" style="box-shadow: 0 15px 30px 1px grey;
-	                            background: rgba(255, 255, 255, 0.90);text-align: center;border-radius: 5px;overflow: hidden;margin: 5em auto;height: 200px;width: 300px;flex-direction: row">
-                                <img class="card-img-top" th:src="${product.image}" alt="Card image error" style="transition: all 0.3s ease-out;width: 50%;height: 15vw;object-fit: cover;">
+                        <div style ="margin-right:10px">
+                            <div class="card cardForBook" >
+                                <img class="card-img-top imgCoverBook" th:src="${product.image}" alt="Card image error">
                                 <div class="card-body" style="height: 30% ; width:30%">
                                     <h5 class="card-title" th:text="${product.name}"></h5>
                                     <p class="card-text" th:text="${product.price}" style="text-decoration: line-through">$</p>
@@ -80,5 +78,16 @@
     </div>
 </div>
 </div>
+<style>
+    body  {
+        background-image: url("https://static.vecteezy.com/system/resources/previews/002/375/040/original/modern-white-background-free-vector.jpg");
+    }
+    .cardForBook {box-shadow: 0 15px 30px 1px grey;
+        background: rgba(255, 255, 255, 0.90);text-align: center;border-radius: 5px;overflow: hidden;margin-bottom: 10px;height: 200px;width: 300px;flex-direction: row
+    }
+    .imgCoverBook{
+       transition: all 0.3s ease-out;width: 50%;height: 100%;object-fit: contain
+    }
+</style>
 </body>
 </html>

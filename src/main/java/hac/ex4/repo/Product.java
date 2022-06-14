@@ -26,8 +26,6 @@ public class Product implements Serializable {
     @PositiveOrZero(message="must be equal or greater than 0 , and integer")
     private int quantity;
 
-    private int count;
-
     @Positive(message="must be greater than 0")
     private double price;
 
@@ -43,7 +41,6 @@ public class Product implements Serializable {
         this.price = price;
         this.discount = discount;
         this.image = image;
-        this.count = 1;
     }
 
     public Product(Product product) {
@@ -52,7 +49,6 @@ public class Product implements Serializable {
         this.price = product.getPrice();
         this.discount = product.getDiscount();
         this.image = product.getImage();
-        this.count = 1;
         this.id = product.getId() ;
     }
 
@@ -75,9 +71,7 @@ public class Product implements Serializable {
     public double getDiscount() {
         return discount;
     }
-    public int getCount() {
-        return count;
-    }
+
 
     //set item
     public void setId(long id) {
@@ -98,9 +92,7 @@ public class Product implements Serializable {
     public void setDiscount(double discount) {
         this.discount = discount;
     }
-    public void setCount(int count) {
-        this.count = count;
-    }
+
 
     @Override
     public String toString() {

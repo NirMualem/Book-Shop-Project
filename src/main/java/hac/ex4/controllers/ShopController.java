@@ -2,6 +2,7 @@ package hac.ex4.controllers;
 
 import hac.ex4.beans.Cart;
 import hac.ex4.repo.Product;
+import hac.ex4.repo.ProductUser;
 import hac.ex4.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,7 +44,7 @@ public class ShopController {
     @PostMapping("/addProduct")
     public String addProduct(@RequestParam("id") long id, Model model) {
         Product prod = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
-        Product product = new Product(prod);
+        ProductUser product = new ProductUser(prod);
         sessionCart.add(product);
         model.addAttribute("products", productService.getProducts());
         model.addAttribute("topProducts", productService.getTopDiscountProducts());
@@ -54,7 +55,7 @@ public class ShopController {
     public int getSumOfCart()
     {
         int sum = 0 ;
-        for (Product prod : sessionCart.getCart())
+        for (ProductUser prod : sessionCart.getCart())
         {
             sum += prod.getCount();
         }
@@ -70,7 +71,7 @@ public class ShopController {
     @PostMapping("/deleteProduct")
     public String deleteProduct(@RequestParam("id") long id, Model model) {
         Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
-        sessionCart.delete(product);
+        sessionCart.delete(product.getId());
         return "redirect:/payment";
     }
 
@@ -85,7 +86,6 @@ public class ShopController {
     //for decrease count of exist product in cart
     @PostMapping("/decreaseProduct")
     public String decreaseProduct(@RequestParam("id") long id, Model model) {
-
         return "redirect:/payment";
     }
     @PostMapping("/destroy")

@@ -11,21 +11,21 @@
 </head>
 <body>
 <div class="container">
+    <a href="/" class="btn btn-primary" style = "margin-top:10px"><i class="fa fa-reply"></i> shop</a>
+
     <div class="row" style="display: flex; justify-content: center;align-items: center;">
 
         <div th:switch="${sessionCart.size()}">
             <h2 th:case="0">the cart is empty</h2>
 
             <div th:case="*">
-                <h2 style="text-align: center";>take a look and get a book</h2>
+                <h2 style="text-align: center; font-family: cursive;font-weight: bold;";>take a look and get a book</h2>
 
                 <div class="card" style = "margin:5px; width:100%">
                     <div class="card-body">
                         <div>
                             <h3> check out </h3>
                         </div>
-
-                        <h2 class="my-5">Users</h2>
                         <table class="table table-striped table-responsive-md">
                             <thead>
                             <tr>
@@ -39,7 +39,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="prodInCart : ${sessionCart}">
-                                <td><img class="card-img-top" th:src="${prodInCart.image}" style="transition: all 0.3s ease-out;width: 50%;height: 15vw;object-fit: cover;">
+                                <td><img class="card-img-top" th:src="${prodInCart.image}" style="transition: all 0.3s ease-out;height: 15vw;object-fit: contain;">
                                 </td>
                                 <td th:text="${prodInCart.name}"></td>
                                 <td th:text="${prodInCart.price}"></td>
@@ -50,7 +50,6 @@
                                     <form action="#" th:action="@{/deleteProduct}" th:object="${prodInCart}" method="post"><input type="hidden" name="id" th:value="${prodInCart.id}">
                                         <input class="btn  btn-outline-secondary" style="height:30px; margin:3px" type="submit" value="+" /></form>
                                 </td>
-                                <td th:text="${prodInCart.price - prodInCart.price * prodInCart.discount/100}"></td>
                                 <td th:text="${prodInCart.count * (prodInCart.price - prodInCart.price * prodInCart.discount/100)}"></td>
                                 <td>
                                     <form action="#" th:action="@{/deleteProduct}" th:object="${prodInCart}" method="post"><input type="hidden" name="id" th:value="${prodInCart.id}">
@@ -67,5 +66,10 @@
         </div>
     </div>
 </div>
+<style>
+    body  {
+        background-image: url("https://static.vecteezy.com/system/resources/previews/002/375/040/original/modern-white-background-free-vector.jpg");
+    }
+</style>
 </body>
 </html>

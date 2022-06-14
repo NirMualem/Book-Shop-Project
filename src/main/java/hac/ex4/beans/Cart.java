@@ -1,6 +1,7 @@
 package hac.ex4.beans;
 
 import hac.ex4.repo.Product;
+import hac.ex4.repo.ProductUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -15,28 +16,28 @@ import java.util.ArrayList;
 @Component
 public class Cart implements Serializable {
 
-    private ArrayList<Product> productsCart;
+    private ArrayList<ProductUser> productsCart;
 
     public Cart() {
         this.productsCart = new ArrayList<>();
     }
 
-    public ArrayList<Product> getCart() {
+    public ArrayList<ProductUser> getCart() {
         System.out.println(productsCart);
         return productsCart;
     }
 
-    public void setCart(ArrayList<Product>  products) {
+    public void setCart(ArrayList<ProductUser> products) {
         this.productsCart = products;
     }
 
-    public void add (Product product) {
+    public void add (ProductUser product) {
         if(productsCart.size()==0)
         {
             productsCart.add(product);
         }
         else {
-            for (Product prod : productsCart) {
+            for (ProductUser prod : productsCart) {
                 if (product.getId() == prod.getId()) {
                     prod.setCount(prod.getCount() + 1);
                     return;
@@ -46,9 +47,21 @@ public class Cart implements Serializable {
         }
     }
 
-    public void delete (Product product) {
-        productsCart.removeIf(prod -> (prod.getId())==(product.getId()));
-        productsCart.remove(product);
+    public void delete (long id) {
+        productsCart.removeIf(prod -> (prod.getId())==(id));
+
+    }
+
+    public void increase (long id) {
+
+        productsCart.removeIf(prod -> (prod.getId())==(id));
+        //productsCart.remove(product);
+        System.out.println(productsCart);
+    }
+
+    public void decrease (long id) {
+        productsCart.removeIf(prod -> (prod.getId())==(id));
+        //productsCart.remove(product);
         System.out.println(productsCart);
     }
 
