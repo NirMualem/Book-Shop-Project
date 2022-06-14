@@ -31,7 +31,7 @@ public class ShopController {
         // the name "Products"  is bound to the VIEW
         model.addAttribute("products", productService.getProducts());
         model.addAttribute("topProducts", productService.getTopDiscountProducts());
-        getSumOfCart(model);
+        addAttributesPayment(model);
         return "user/index";
     }
 
@@ -49,39 +49,33 @@ public class ShopController {
         sessionCart.add(product);
         model.addAttribute("products", productService.getProducts());
         model.addAttribute("topProducts", productService.getTopDiscountProducts());
-        getSumOfCart(model);
+        addAttributesPayment(model);
         return "user/index";
     }
 
-    public void getSumOfCart(Model model)
-    {
-        int sum = 0 ;
-        for (ProductUser prod : sessionCart.getCart())
-        {
-            sum += prod.getCount();
-        }
-        model.addAttribute("totalProducts", sum);
-    }
 
-    public void getSumPrice(Model model)
+    public void addAttributesPayment(Model model)
     {
         int sum = 0 ;
         int sumWithoutDiscount = 0 ;
+        int sumOfCart = 0 ;
+
         for (ProductUser prod : sessionCart.getCart())
         {
             sum += ((prod.getPrice() - prod.getPrice() * prod.getDiscount()/100) * prod.getCount());
             sumWithoutDiscount += (prod.getPrice() * prod.getCount());
+            sumOfCart += prod.getCount();
+
         }
         model.addAttribute("totalDiscount", (sumWithoutDiscount - sum));
         model.addAttribute("totalPrice", sum);
+        model.addAttribute("totalProducts", sumOfCart);
+        model.addAttribute("sessionCart", sessionCart.getCart());
     }
 
     @GetMapping("/payment")
     public String process(Model model) {
-        System.out.println(sessionCart.getCart());
-        model.addAttribute("sessionCart", sessionCart.getCart());
-        getSumOfCart(model);
-        getSumPrice(model);
+        addAttributesPayment(model);
         return "/user/payment";
     }
 
@@ -96,6 +90,7 @@ public class ShopController {
             if(cart.get(index).getCount() > product.getQuantity())
             {
                 canComplete=false;
+                model.addAttribute("orderError", "");
                 index--;
                 break;
             }
@@ -116,9 +111,7 @@ public class ShopController {
                 product.setQuantity(product.getQuantity() + cart.get(index).getCount());
             }
         }
-        getSumOfCart(model);
-        getSumPrice(model);
-        model.addAttribute("sessionCart", sessionCart.getCart());
+        addAttributesPayment(model);
         return "/user/payment";
     }
 
@@ -126,8 +119,7 @@ public class ShopController {
     public String deleteProduct(@RequestParam("id") long id, Model model) {
         Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         sessionCart.delete(product.getId());
-        getSumOfCart(model);
-        getSumPrice(model);
+        addAttributesPayment(model);
         return "redirect:/payment";
     }
 
@@ -135,8 +127,7 @@ public class ShopController {
     @PostMapping("/increaseProduct")
     public String increaseProduct(@RequestParam("id") long id, Model model) {
         sessionCart.increase(id);
-        getSumOfCart(model);
-        getSumPrice(model);
+        addAttributesPayment(model);
         return "redirect:/payment";
     }
 
@@ -144,8 +135,7 @@ public class ShopController {
     @PostMapping("/decreaseProduct")
     public String decreaseProduct(@RequestParam("id") long id, Model model) {
         sessionCart.decrease(id);
-        getSumOfCart(model);
-        getSumPrice(model);
+        addAttributesPayment(model);
         return "redirect:/payment";
     }
 
