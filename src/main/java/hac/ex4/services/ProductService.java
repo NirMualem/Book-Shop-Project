@@ -43,6 +43,6 @@ public class ProductService {
     }
 
     public List<Product> searchByTitle(String title) {
-        return repository.findByName(title);
+        return repository.findByNameContaining(title);
     }
 }

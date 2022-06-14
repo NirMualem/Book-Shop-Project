@@ -44,18 +44,19 @@ public class ShopController {
     public String searchBooks(@RequestParam("title") String title,Model model) {
 
         model.addAttribute("products",  productService.searchByTitle(title));
+        model.addAttribute("topProducts", productService.getTopDiscountProducts());
+        addAttributesPayment(model, "");
         return "user/index";
     }
 
     @PostMapping("/addProduct")
     public String addProduct(@RequestParam("id") long id, Model model) {
-        String errors = "" ;
         Product prod = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         ProductUser product = new ProductUser(prod);
         sessionCart.add(product);
         model.addAttribute("products", productService.getProducts());
         model.addAttribute("topProducts", productService.getTopDiscountProducts());
-        addAttributesPayment(model, errors);
+        addAttributesPayment(model, "");
         return "user/index";
     }
 
