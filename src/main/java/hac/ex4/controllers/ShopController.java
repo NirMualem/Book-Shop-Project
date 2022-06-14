@@ -86,7 +86,7 @@ public class ShopController {
     }
 
     @GetMapping("/confirmOrder")
-    public String confirmOrder(HttpServletRequest request) {
+    public String confirmOrder(HttpServletRequest request, Model model) {
         boolean canComplete = true ;
         ArrayList<ProductUser> cart = sessionCart.getCart() ;
         int index = 0 ;
@@ -116,8 +116,10 @@ public class ShopController {
                 product.setQuantity(product.getQuantity() + cart.get(index).getCount());
             }
         }
-
-        return "redirect:/user/payment";
+        getSumOfCart(model);
+        getSumPrice(model);
+        model.addAttribute("sessionCart", sessionCart.getCart());
+        return "/user/payment";
     }
 
     @PostMapping("/deleteProduct")
