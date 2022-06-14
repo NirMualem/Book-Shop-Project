@@ -36,11 +36,11 @@
                     </thead>
                     <tbody>
                     <tr th:each="product : ${products}">
-                        <td th:text="${product.name}"></td>
-                        <td th:text="${product.price}"></td>
-                        <td th:text="${product.quantity}"></td>
+                        <td th:text="${product.name}"style="max-width:200px;overflow: auto;"></td>
+                        <td th:text="${product.price}" style="max-width:100px;overflow: auto;"></td>
+                        <td th:text="${product.quantity}" style="max-width:100px;overflow: auto;"></td>
                         <td th:text="${product.discount}"></td>
-                        <td th:text="${product.image}"></td>
+                        <td th:text="${product.image}" style="max-width:200px;overflow: auto;"></td>
                         <td>
                             <form action="#" th:action="@{/admin/edit}" th:object="${product}" method="post"><input type="hidden" name="id" th:value="${product.id}">
                                 <input class="btn btn-primary" type="submit" value="EDIT" /></form>

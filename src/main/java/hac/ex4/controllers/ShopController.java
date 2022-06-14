@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 @Controller
 public class ShopController {
@@ -30,7 +31,7 @@ public class ShopController {
         // the name "Products"  is bound to the VIEW
         model.addAttribute("products", productService.getProducts());
         model.addAttribute("topProducts", productService.getTopDiscountProducts());
-        model.addAttribute("sumOfCart", getSumOfCart());
+        getSumOfCart(model);
         return "user/index";
     }
 
@@ -48,50 +49,110 @@ public class ShopController {
         sessionCart.add(product);
         model.addAttribute("products", productService.getProducts());
         model.addAttribute("topProducts", productService.getTopDiscountProducts());
-        model.addAttribute("sumOfCart", getSumOfCart());
+        getSumOfCart(model);
         return "user/index";
     }
 
-    public int getSumOfCart()
+    public void getSumOfCart(Model model)
     {
         int sum = 0 ;
         for (ProductUser prod : sessionCart.getCart())
         {
             sum += prod.getCount();
         }
-        return sum;
+        model.addAttribute("totalProducts", sum);
     }
+
+    public void getSumPrice(Model model)
+    {
+        int sum = 0 ;
+        int sumWithoutDiscount = 0 ;
+        for (ProductUser prod : sessionCart.getCart())
+        {
+            sum += ((prod.getPrice() - prod.getPrice() * prod.getDiscount()/100) * prod.getCount());
+            sumWithoutDiscount += (prod.getPrice() * prod.getCount());
+        }
+        model.addAttribute("totalDiscount", (sumWithoutDiscount - sum));
+        model.addAttribute("totalPrice", sum);
+    }
+
     @GetMapping("/payment")
     public String process(Model model) {
         System.out.println(sessionCart.getCart());
         model.addAttribute("sessionCart", sessionCart.getCart());
+        getSumOfCart(model);
+        getSumPrice(model);
         return "/user/payment";
+    }
+
+    @GetMapping("/confirmOrder")
+    public String confirmOrder(HttpServletRequest request) {
+        boolean canComplete = true ;
+        ArrayList<ProductUser> cart = sessionCart.getCart() ;
+        int index = 0 ;
+        for (index = 0 ; index < cart.size() ; index++)
+        {
+            Product product = productService.getProduct(cart.get(index).getId()).orElseThrow(() -> new IllegalArgumentException("Invalid product Id"));
+            if(cart.get(index).getCount() > product.getQuantity())
+            {
+                canComplete=false;
+                index--;
+                break;
+            }
+            else
+            {
+                product.setQuantity(product.getQuantity() - cart.get(index).getCount());
+            }
+        }
+        if(canComplete)
+        {
+            return "/user/confirmPayment";
+        }
+        else
+        {
+            for (; index >= 0  ; index--)
+            {
+                Product product = productService.getProduct(cart.get(index).getId()).orElseThrow(() -> new IllegalArgumentException("Invalid product Id"));
+                product.setQuantity(product.getQuantity() + cart.get(index).getCount());
+            }
+        }
+
+        return "redirect:/user/payment";
     }
 
     @PostMapping("/deleteProduct")
     public String deleteProduct(@RequestParam("id") long id, Model model) {
         Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         sessionCart.delete(product.getId());
+        getSumOfCart(model);
+        getSumPrice(model);
         return "redirect:/payment";
     }
 
     //for increase count of exist product in cart
     @PostMapping("/increaseProduct")
     public String increaseProduct(@RequestParam("id") long id, Model model) {
-        Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
-
+        sessionCart.increase(id);
+        getSumOfCart(model);
+        getSumPrice(model);
         return "redirect:/payment";
     }
 
     //for decrease count of exist product in cart
     @PostMapping("/decreaseProduct")
     public String decreaseProduct(@RequestParam("id") long id, Model model) {
+        sessionCart.decrease(id);
+        getSumOfCart(model);
+        getSumPrice(model);
         return "redirect:/payment";
     }
+
     @PostMapping("/destroy")
     public String destroySession(HttpServletRequest request) {
         request.getSession().invalidate();
         return "redirect:/user/index";
     }
+
+
 
 }

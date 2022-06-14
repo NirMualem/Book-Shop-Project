@@ -53,16 +53,21 @@ public class Cart implements Serializable {
     }
 
     public void increase (long id) {
-
-        productsCart.removeIf(prod -> (prod.getId())==(id));
-        //productsCart.remove(product);
-        System.out.println(productsCart);
+        for (ProductUser prod : productsCart)
+            if(prod.getId() == id)
+            {
+                prod.setCount(prod.getCount()+1);
+                return;
+            }
     }
 
     public void decrease (long id) {
-        productsCart.removeIf(prod -> (prod.getId())==(id));
-        //productsCart.remove(product);
-        System.out.println(productsCart);
+        for (ProductUser prod : productsCart)
+            if(prod.getId() == id && prod.getCount() > 1)
+            {
+                prod.setCount(prod.getCount()-1);
+                return;
+            }
     }
 
     /* BEAN using ctor - session scope */
