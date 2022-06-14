@@ -21,7 +21,7 @@ public class OrderService {
     public List<OrderConfirm> getOrders() {
         return repository.findAll();
     }
-//    public List<OrderConfirm> findAllOrderByDateDesc() {
-//        return repository.findAll();
-//    }
+    public List<OrderConfirm> findAllOrderByDate() {
+        return repository.findAllByOrderByOrderDateAsc();
+    }
 }

@@ -11,46 +11,41 @@
 </head>
 <body>
 <div class="container">
+
     <div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
         <form th:action="@{/logout}" method="post" style="display:inline">
             <input type="submit" value="Logout"/>
         </form>
     </div>
+    <a href="/admin" class="btn btn-primary"><i class="fa fa-reply"></i>return</a>
     <div class="row" style="display: flex; justify-content: center;align-items: center;">
         <div th:switch="${orders.size()}" class="col-md-6">
-            <h2 th:case="0">No products yet!</h2>
+            <h2 th:case="0">No orders yet!</h2>
 
             <div th:case="*">
                 <h2 class="my-5">Users</h2>
                 <table class="table table-striped table-responsive-md">
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Discount</th>
-                        <th>Image Url</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th style="text-align: center;">order total sum </th>
+                        <th style="text-align: center;">order date time</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="product : ${products}">
-                        <td th:text="${product.name}"style="max-width:200px;overflow: auto;"></td>
-                        <td th:text="${product.price}" style="max-width:100px;overflow: auto;"></td>
-                        <td th:text="${product.quantity}" style="max-width:100px;overflow: auto;"></td>
-                        <td th:text="${product.discount}"></td>
-                        <td th:text="${product.image}" style="max-width:200px;overflow: auto;"></td>
-                        <td>
-                            <form action="#" th:action="@{/admin/edit}" th:object="${product}" method="post"><input type="hidden" name="id" th:value="${product.id}">
-                                <input class="btn btn-primary" type="submit" value="EDIT" /></form>
-                        </td>
-                        <td><a th:href="@{/admin/delete/{id}(id=${product.id})}" class="btn btn-primary"><i>X</i></a></td>
+                    <tr th:each="order : ${orders}">
+                        <td ><div class="row" style="justify-content: center;"><p th:text="${order.orderSum}"><p>$</p></p></div></td>
+                        <td th:text="${order.orderDate}" style="text-align: center;"></td>
                     </tr>
                     </tbody>
                 </table>
+                <div class="card cardForBook">
+                    <div class="card-body">
+                        <div class="row">
+                            <h5 class="card-text">total all orders: &nbsp </h5><h5 th:text="${totalOrdersSum}"></h5><h5>$</h5>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class="my-5"><a href="/admin/add" class="btn btn-primary"> add a new book<i class="fa fa-book ml-2"></i></a></p>
         </div>
     </div>
 </div>

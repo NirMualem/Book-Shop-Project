@@ -2,6 +2,7 @@ package hac.ex4.controllers;
 
 import hac.ex4.repo.OrderConfirm;
 import hac.ex4.repo.Product;
+import hac.ex4.repo.ProductUser;
 import hac.ex4.services.OrderService;
 import hac.ex4.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class AdminController {
     @GetMapping("/admin")
     public String main(Product product, Model model) {
         // the name "Products"  is bound to the VIEW
-        model.addAttribute("products", orderService.getOrders());
+        model.addAttribute("products", productService.getProducts());
         return "admin/index";
     }
 
@@ -38,10 +39,23 @@ public class AdminController {
 
     @GetMapping("/admin/orders")
     public String showOrders(OrderConfirm order, Model model) {
-        model.addAttribute("orders", productService.getProducts());
+        model.addAttribute("orders", orderService.getOrders());
+        totalOrderSum(model);
+
         return "admin/orders";
     }
 
+    public void totalOrderSum(Model model)
+    {
+        double sum = 0 ;
+
+        for (OrderConfirm order : orderService.findAllOrderByDate())
+        {
+            sum += order.getOrderSum();
+        }
+
+        model.addAttribute("totalOrdersSum", sum);
+    }
 
     @PostMapping("/admin/addproduct")
     public String addProduct(@Valid Product product, BindingResult result, Model model) {

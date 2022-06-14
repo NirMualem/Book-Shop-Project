@@ -63,7 +63,7 @@ public class ShopController {
     {
         double sum = 0 ;
         double sumWithoutDiscount = 0 ;
-        double sumOfCart = 0 ;
+        int sumOfCart = 0 ;
 
         for (ProductUser prod : sessionCart.getCart())
         {
