@@ -60,7 +60,7 @@
                             </tbody>
                             <div class="card cardForBook">
                                 <div class="card-body">
-                                    <p class="error" th:text="${orderError}"></p>
+                                    <div class="error" style="color:red;" th:text="${orderError}"></div>
                                     <div class="row">
                                         <h5 class="card-text">total price: &nbsp </h5><h5 th:text="${totalPrice}"></h5><h5>$</h5>
                                     </div>
@@ -71,7 +71,8 @@
                                         <div class="row" style="flex: 1">
                                         <p class="col-6 card-text">in this buy you save: &nbsp </p><i th:text="${totalDiscount}"></i><p>$</p>
                                         </div>
-                                        <a href="/confirmOrder" class="btn btn-primary" style = "margin-top:10px"><i class="fas fa-dollar-sign"></i> pay</a>
+                                        <a href="/destroySession" class="btn btn-primary" style = "margin:10px"> clear cart</a>
+                                        <a href="/confirmOrder" class="btn btn-primary" style = "margin:10px"><i class="fas fa-dollar-sign"></i> pay</a>
                                     </div>
                                 </div>
                             </div>

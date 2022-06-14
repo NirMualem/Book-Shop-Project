@@ -29,9 +29,10 @@ public class ShopController {
     @GetMapping("/")
     public String main(Product product, Model model) {
         // the name "Products"  is bound to the VIEW
+        String errors = "" ;
         model.addAttribute("products", productService.getProducts());
         model.addAttribute("topProducts", productService.getTopDiscountProducts());
-        addAttributesPayment(model);
+        addAttributesPayment(model , errors);
         return "user/index";
     }
 
@@ -44,17 +45,18 @@ public class ShopController {
 
     @PostMapping("/addProduct")
     public String addProduct(@RequestParam("id") long id, Model model) {
+        String errors = "" ;
         Product prod = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         ProductUser product = new ProductUser(prod);
         sessionCart.add(product);
         model.addAttribute("products", productService.getProducts());
         model.addAttribute("topProducts", productService.getTopDiscountProducts());
-        addAttributesPayment(model);
+        addAttributesPayment(model, errors);
         return "user/index";
     }
 
 
-    public void addAttributesPayment(Model model)
+    public void addAttributesPayment(Model model , String errors)
     {
         int sum = 0 ;
         int sumWithoutDiscount = 0 ;
@@ -67,6 +69,8 @@ public class ShopController {
             sumOfCart += prod.getCount();
 
         }
+
+        model.addAttribute("orderError", errors);
         model.addAttribute("totalDiscount", (sumWithoutDiscount - sum));
         model.addAttribute("totalPrice", sum);
         model.addAttribute("totalProducts", sumOfCart);
@@ -75,43 +79,43 @@ public class ShopController {
 
     @GetMapping("/payment")
     public String process(Model model) {
-        addAttributesPayment(model);
+        String errors = "" ;
+        addAttributesPayment(model , errors);
         return "/user/payment";
     }
 
     @GetMapping("/confirmOrder")
     public String confirmOrder(HttpServletRequest request, Model model) {
         boolean canComplete = true ;
+        String errors = "";
         ArrayList<ProductUser> cart = sessionCart.getCart() ;
         int index = 0 ;
         for (index = 0 ; index < cart.size() ; index++)
         {
             Product product = productService.getProduct(cart.get(index).getId()).orElseThrow(() -> new IllegalArgumentException("Invalid product Id"));
-            if(cart.get(index).getCount() > product.getQuantity())
-            {
-                canComplete=false;
-                model.addAttribute("orderError", "");
-                index--;
-                break;
+            if(cart.get(index).getCount() > product.getQuantity()) {
+                canComplete = false;
+                errors += "product \"" + product.getName() + "\" out of stock, the current max of this product is " + product.getQuantity() + ". " ;
             }
-            else
-            {
-                product.setQuantity(product.getQuantity() - cart.get(index).getCount());
-            }
+            product.setQuantity(product.getQuantity() - cart.get(index).getCount());
         }
+
         if(canComplete)
         {
             return "/user/confirmPayment";
         }
         else
         {
-            for (; index >= 0  ; index--)
+            for (index = 0 ; index < cart.size()  ; index++)
             {
                 Product product = productService.getProduct(cart.get(index).getId()).orElseThrow(() -> new IllegalArgumentException("Invalid product Id"));
                 product.setQuantity(product.getQuantity() + cart.get(index).getCount());
             }
         }
-        addAttributesPayment(model);
+        if(model.getAttribute("orderError") == null)
+            addAttributesPayment(model, "");
+
+        addAttributesPayment(model, errors);
         return "/user/payment";
     }
 
@@ -119,15 +123,16 @@ public class ShopController {
     public String deleteProduct(@RequestParam("id") long id, Model model) {
         Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         sessionCart.delete(product.getId());
-        addAttributesPayment(model);
+        addAttributesPayment(model, "");
         return "redirect:/payment";
     }
 
     //for increase count of exist product in cart
     @PostMapping("/increaseProduct")
     public String increaseProduct(@RequestParam("id") long id, Model model) {
+        String errors = "";
         sessionCart.increase(id);
-        addAttributesPayment(model);
+        addAttributesPayment(model, errors);
         return "redirect:/payment";
     }
 
@@ -135,16 +140,16 @@ public class ShopController {
     @PostMapping("/decreaseProduct")
     public String decreaseProduct(@RequestParam("id") long id, Model model) {
         sessionCart.decrease(id);
-        addAttributesPayment(model);
+        addAttributesPayment(model, "");
         return "redirect:/payment";
     }
 
-    @PostMapping("/destroy")
-    public String destroySession(HttpServletRequest request) {
+    @GetMapping("/destroySession")
+    public String destroySession(HttpServletRequest request ,Model model) {
         request.getSession().invalidate();
-        return "redirect:/user/index";
+        model.addAttribute("products", productService.getProducts());
+        model.addAttribute("topProducts", productService.getTopDiscountProducts());
+        addAttributesPayment(model, "");
+        return "redirect:/";
     }
-
-
-
 }

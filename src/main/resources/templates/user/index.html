@@ -39,10 +39,14 @@
                         <img class="card-img-top imgCoverBook" th:src="${product.image}" >
                             <div class="card-body">
                             <h5 class="card-title" th:text="${product.name}"></h5>
-                            <p class="card-text" th:text="${product.price}" style="text-decoration: line-through">$</p>
-                            <p class="card-text"  th:text="${product.price - product.price * product.discount/100}"></p>
+                            <div th:switch="${product.quantity}">
+                                <h2 th:case="0">out of stock</h2>
+                                <div th:case="*">
+                                    <p class="card-text"  th:text="${product.price - product.price * product.discount/100}"></p>
+                                <p class="card-text" th:text="${product.price}" style="text-decoration: line-through"></p>
                                 <form action="#" th:action="@{/addProduct}" th:object="${product}" method="post"><input type="hidden" name="id" th:value="${product.id}">
                                     <input class="card-text btn btn-primary" type="submit" value="add to cart" /></form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -58,14 +62,19 @@
                 <div class="row">
                     <div th:each="product : ${products}">
                         <div style ="margin-right:10px">
-                            <div class="card cardForBook" >
-                                <img class="card-img-top imgCoverBook" th:src="${product.image}" alt="Card image error">
-                                <div class="card-body" style="height: 30% ; width:30%">
+                            <div class="card cardForBook">
+                                <img class="card-img-top imgCoverBook" th:src="${product.image}" >
+                                <div class="card-body">
                                     <h5 class="card-title" th:text="${product.name}"></h5>
-                                    <p class="card-text" th:text="${product.price}" style="text-decoration: line-through">$</p>
-                                    <p class="card-text"  th:text="${product.price - product.price * product.discount/100}"></p>
-                                    <form action="#" th:action="@{/addProduct}" th:object="${product}" method="post"><input type="hidden" name="id" th:value="${product.id}">
-                                        <input class="btn btn-primary" type="submit" value="add to cart" /></form>
+                                    <div th:switch="${product.quantity}">
+                                        <h2 th:case="0">out of stock</h2>
+                                        <div th:case="*">
+                                            <p class="card-text"  th:text="${product.price - product.price * product.discount/100}"></p>
+                                            <p class="card-text" th:text="${product.price}" style="text-decoration: line-through"></p>
+                                            <form action="#" th:action="@{/addProduct}" th:object="${product}" method="post"><input type="hidden" name="id" th:value="${product.id}">
+                                                <input class="card-text btn btn-primary" type="submit" value="add to cart" /></form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
