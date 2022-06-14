@@ -39,7 +39,7 @@ public class AdminController {
 
     @GetMapping("/admin/orders")
     public String showOrders(OrderConfirm order, Model model) {
-        model.addAttribute("orders", orderService.getOrders());
+        model.addAttribute("orders", orderService.findAllOrderByDate());
         totalOrderSum(model);
 
         return "admin/orders";
@@ -49,7 +49,7 @@ public class AdminController {
     {
         double sum = 0 ;
 
-        for (OrderConfirm order : orderService.findAllOrderByDate())
+        for (OrderConfirm order : orderService.getOrders())
         {
             sum += order.getOrderSum();
         }

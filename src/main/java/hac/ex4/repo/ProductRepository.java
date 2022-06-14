@@ -10,9 +10,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByName(String name);
     List<Product> findFirst5ByOrderByDiscountDesc();
-    /* add here the queries you may need - in addition to CRUD operations
-    List<User> findUserByUserName(String userName);
-    List<User> findByEmail(String email);
-    List<User> findByUserNameAndEmail(String userName, String email);
-    List<User> findFirst10ByOrderByUserNameDesc(); */
 }

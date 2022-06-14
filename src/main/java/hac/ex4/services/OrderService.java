@@ -22,6 +22,6 @@ public class OrderService {
         return repository.findAll();
     }
     public List<OrderConfirm> findAllOrderByDate() {
-        return repository.findAllByOrderByOrderDateAsc();
+        return repository.findAllByOrderByOrderDateDesc();
     }
 }
