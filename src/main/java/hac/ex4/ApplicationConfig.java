@@ -8,6 +8,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * spring security class
+ * for ADMIN by username "admin" password "password"
+ * and "USER" by username "user1" / "user2" /"user3" password "user"
+ */
 @Configuration
 @EnableWebSecurity
 public class ApplicationConfig extends WebSecurityConfigurerAdapter {
@@ -25,14 +30,15 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
                 .withUser("user3").password(encoder.encode("user")).roles("USER");
     }
 
+    /**
+     * @param http http
+     * @throws Exception when access dined 403
+     * set all access in shop
+     */
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
                 .formLogin()
-                //.loginPage("/login") // <=============== uncomment this for a custom login page (see also the controller)
-                //.loginProcessingUrl("/login")
-                //.defaultSuccessUrl("/admin", true)
-                //.failureUrl("/login-error") // <===============  uncomment this for a custom login page (see also the controller)
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")
@@ -41,7 +47,6 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/confirmOrder").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/loginForPay").hasAnyRole("ADMIN", "USER")
-                // custom error page for exceptions
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/403.html");
