@@ -19,7 +19,10 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
 
         auth
                 .inMemoryAuthentication()
-                .withUser("admin").password(encoder.encode("password")).roles("ADMIN");
+                .withUser("admin").password(encoder.encode("password")).roles("ADMIN").and()
+                .withUser("user1").password(encoder.encode("user")).roles("USER").and()
+                .withUser("user2").password(encoder.encode("user")).roles("USER").and()
+                .withUser("user3").password(encoder.encode("user")).roles("USER");
     }
 
     @Override
@@ -28,14 +31,16 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 //.loginPage("/login") // <=============== uncomment this for a custom login page (see also the controller)
                 //.loginProcessingUrl("/login")
-                .defaultSuccessUrl("/admin", true)
+                //.defaultSuccessUrl("/admin", true)
                 //.failureUrl("/login-error") // <===============  uncomment this for a custom login page (see also the controller)
                 .and()
                 .logout()
-                .logoutSuccessUrl("/admin")
+                .logoutSuccessUrl("/")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/confirmOrder").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/loginForPay").hasAnyRole("ADMIN", "USER")
                 // custom error page for exceptions
                 .and()
                 .exceptionHandling()

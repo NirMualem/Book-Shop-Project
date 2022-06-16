@@ -19,19 +19,23 @@ public class OrderConfirm implements Serializable {
     @Positive(message="must be greater than 0")
     private double orderSum;
 
+    private String orderUserName;
+
     @CreationTimestamp
     private Timestamp orderDate;
 
     public OrderConfirm() {}
 
-    public OrderConfirm(double orderSum, Timestamp orderDate) {
+    public OrderConfirm(double orderSum, Timestamp orderDate , String orderUserName) {
         this.orderSum = orderSum;
         this.orderDate = orderDate;
+        this.orderUserName = orderUserName;
     }
 
-    public OrderConfirm(double orderSum) {
+    public OrderConfirm(double orderSum ,String orderUserName) {
         this.orderSum = orderSum;
         this.orderDate = new Timestamp(System.currentTimeMillis());
+        this.orderUserName = orderUserName;
     }
     //get item
     public long getId() {
@@ -39,6 +43,9 @@ public class OrderConfirm implements Serializable {
     }
     public double getOrderSum() {
         return orderSum;
+    }
+    public String getOrderUserName() {
+        return orderUserName;
     }
     public Timestamp getOrderDate() {return orderDate;}
 
@@ -51,6 +58,9 @@ public class OrderConfirm implements Serializable {
     }
     public void setOrderDate(Timestamp orderDate) {
         this.orderDate = orderDate;
+    }
+    public void setOrderUserName(String orderUserName) {
+        this.orderUserName = orderUserName;
     }
 
     @Override

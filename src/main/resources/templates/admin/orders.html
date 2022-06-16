@@ -29,12 +29,14 @@
                     <tr>
                         <th style="text-align: center;">order total sum </th>
                         <th style="text-align: center;">order date time</th>
+                        <th style="text-align: center;">order by</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="order : ${orders}">
                         <td ><div class="row" style="justify-content: center;"><p th:text="${order.orderSum}"><p>$</p></p></div></td>
                         <td th:text="${order.orderDate}" style="text-align: center;"></td>
+                        <td th:text="${order.orderUserName}" style="text-align: center;"></td>
                     </tr>
                     </tbody>
                 </table>

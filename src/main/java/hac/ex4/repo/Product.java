@@ -18,7 +18,7 @@ public class Product implements Serializable {
     private long id;
 
     @NotEmpty(message = "Name is mandatory")
-    @Max(value=20, message="name limit 20 char")
+    @Size(max=20,min=2, message="name must be 2 to 20 char")
     private String name;
 
     @URL(message = "url must be valid. keep empty for default image")
@@ -30,8 +30,8 @@ public class Product implements Serializable {
     @Positive(message="must be greater than 0")
     private double price;
 
-    @PositiveOrZero(message="must be between 0 to 100")
-    @Max(value=100, message="must be between 0 to 100")
+    @PositiveOrZero(message="must be between 0 to 99")
+    @Max(value=99, message="must be between 0 to 99")
     private double discount ;
 
     public Product() {}

@@ -9,6 +9,8 @@ import hac.ex4.services.OrderService;
 import hac.ex4.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -93,6 +95,12 @@ public class ShopController {
         return "/user/payment";
     }
 
+    @GetMapping("/loginForPay")
+    public String loginForPay(HttpServletRequest request, Model model) {
+
+        return "redirect:/confirmOrder";
+    }
+
     @GetMapping("/confirmOrder")
     public String confirmOrder(HttpServletRequest request, Model model) {
         boolean canComplete = true ;
@@ -115,7 +123,9 @@ public class ShopController {
         if(canComplete)
         {
             try{
-                OrderConfirm order = new OrderConfirm(sum);
+                Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                System.out.println(((UserDetails) principal).getUsername());
+                OrderConfirm order = new OrderConfirm(sum ,((UserDetails) principal).getUsername());
                 orderService.addOrder(order);
             } catch (Exception e) {
                 System.out.println(e);

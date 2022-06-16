@@ -19,6 +19,11 @@ all orders. the user can buy books </a>.</p>
 <p>
 we limit the book name to 20 chars. 
 </p>
+<h4>
+user that make a buy stay register until he log out. </br>
+admin must log out user account to access /admin area. </br>
+user that try go admin area get 404 error.
+</h4>
 <p>
 when user order and the books not available he get message with
 the current amount - message delete after any change.
