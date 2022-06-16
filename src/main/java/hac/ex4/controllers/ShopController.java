@@ -138,17 +138,20 @@ public class ShopController {
     }
 
     @PostMapping("/deleteProduct")
-    public String deleteProduct(@RequestParam("id") long id, Model model) {
+    public String deleteProduct(@RequestParam("id") long id,HttpServletRequest request, Model model) {
         Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         sessionCart.delete(product.getId());
+        if(sessionCart.getCart().size() == 0)
+        {
+            request.getSession().invalidate();
+        }
         addAttributesPayment(model, "");
         return "redirect:/payment";
     }
 
     //for increase count of exist product in cart
     @PostMapping("/increaseProduct")
-    public String increaseProduct(@RequestParam("id") long id,HttpServletRequest request , Model model) {
-        request.getSession().invalidate();
+    public String increaseProduct(@RequestParam("id") long id , Model model) {
         sessionCart.increase(id);
         addAttributesPayment(model, "");
         return "redirect:/payment";
