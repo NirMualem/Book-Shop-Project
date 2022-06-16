@@ -38,7 +38,6 @@ public class ShopController {
     @GetMapping("/")
     public String main(Product product, Model model) {
         // the name "Products"  is bound to the VIEW
-        System.out.println(metrics.getListener().getTotalActiveSession());
         String errors = "" ;
         model.addAttribute("products", productService.getProducts());
         model.addAttribute("topProducts", productService.getTopDiscountProducts());
