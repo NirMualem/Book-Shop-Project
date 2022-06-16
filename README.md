@@ -35,3 +35,6 @@ the current amount - message delete after any change.
 session: the session track all user that open the store, if user close his web the session delete after amount of time that the
 program decide its inactive. delete session remove the current one and open new
 </p>
+<p>
+when we doing search the books will appear in the second section of the books. 
+</p>
