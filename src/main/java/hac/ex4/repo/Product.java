@@ -18,6 +18,7 @@ public class Product implements Serializable {
     private long id;
 
     @NotEmpty(message = "Name is mandatory")
+    @Max(value=20, message="name limit 20 char")
     private String name;
 
     @URL(message = "url must be valid. keep empty for default image")

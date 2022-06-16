@@ -48,7 +48,7 @@ public class ShopController {
     @PostMapping("/user/search")
     public String searchBooks(@RequestParam("title") String title,Model model) {
 
-        model.addAttribute("products",  productService.searchByTitle(title));
+        model.addAttribute("products",  productService.searchByTitle(title.trim()));
         model.addAttribute("topProducts", productService.getTopDiscountProducts());
         addAttributesPayment(model, "");
         return "user/index";
