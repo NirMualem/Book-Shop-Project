@@ -21,24 +21,36 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
+/**
+ * shop controller.
+ */
+
 @Controller
 public class ShopController {
 
-    /* inject via its type the product repo bean - a singleton */
+    //product service
     @Autowired
     private ProductService productService;
 
+    //order service.
+    @Autowired
+    private OrderService orderService;
+
+    //for get the session counter.
     @Resource(name="sessionListenerWithMetrics")
     private ServletListenerRegistrationBean<SessionListenerCounter> metrics;
 
-    @Autowired
-    private OrderService orderService;
-    // injection by ctor: match by name
+    //create session cart.
     @Resource(name = "sessionBean")
     private Cart sessionCart;
 
+    /**
+     * get request to get the shop
+     * @param model - for update attribute.
+     * @return the html page of the shop
+     */
     @GetMapping("/")
-    public String main(Product product, Model model) {
+    public String main(Model model) {
         // the name "Products"  is bound to the VIEW
         String errors = "" ;
         model.addAttribute("products", productService.getProducts());
@@ -47,6 +59,12 @@ public class ShopController {
         return "user/index";
     }
 
+    /**
+     * post request for search book.
+     * @param title -  title or a part of the title.
+     * @param model- for update attributes.
+     * @return the main page with the book that include the title.
+     */
     @PostMapping("/user/search")
     public String searchBooks(@RequestParam("title") String title,Model model) {
 
@@ -56,6 +74,12 @@ public class ShopController {
         return "user/index";
     }
 
+    /**
+     * post request for add book to cart.
+     * @param id - id of the book to add
+     * @param model - for update attributes
+     * @return the main page of the shop.
+     */
     @PostMapping("/addProduct")
     public String addProduct(@RequestParam("id") long id, Model model) {
         Product prod = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
@@ -67,6 +91,11 @@ public class ShopController {
         return "user/index";
     }
 
+    /**
+     * this function calculate all payment and update the attributes
+     * @param model - for update the attribute.
+     * @param errors - error to add the page if existed.
+     */
     public void addAttributesPayment(Model model , String errors)
     {
         double sum = 0 ;
@@ -88,6 +117,11 @@ public class ShopController {
         model.addAttribute("sessionCart", sessionCart.getCart());
     }
 
+    /**
+     * post request get the payment cart.
+     * @param model - for update attribute.
+     * @return html page payment.
+     */
     @GetMapping("/payment")
     public String process(Model model) {
         String errors = "" ;
@@ -95,12 +129,25 @@ public class ShopController {
         return "/user/payment";
     }
 
+    /**
+     * get request for login to user before payment.
+     * @param request Http servlet request.
+     * @param model - for update attribute.
+     * @return confirm order request.
+     */
     @GetMapping("/loginForPay")
     public String loginForPay(HttpServletRequest request, Model model) {
 
         return "redirect:/confirmOrder";
     }
 
+    /**
+     * check the order of the payment
+     * if there is error return to the last page else of to the success payment page.
+     * @param request -Http servlet request.
+     * @param model - for update attribute.
+     * @return html page.
+     */
     @GetMapping("/confirmOrder")
     public String confirmOrder(HttpServletRequest request, Model model) {
         boolean canComplete = true ;
@@ -117,9 +164,7 @@ public class ShopController {
             }
             product.setQuantity(product.getQuantity() - cart.get(index).getCount());
             sum += ((cart.get(index).getPrice() - cart.get(index).getPrice() * cart.get(index).getDiscount()/100) * cart.get(index).getCount());
-
         }
-
         if(canComplete)
         {
             try{
@@ -147,6 +192,13 @@ public class ShopController {
         return "/user/payment";
     }
 
+    /**
+     * post request to delete product from cart
+     * @param id - id of the product to delete.
+     * @param request  -Http servlet request.
+     * @param model - for update attribute.
+     * @return
+     */
     @PostMapping("/deleteProduct")
     public String deleteProduct(@RequestParam("id") long id,HttpServletRequest request, Model model) {
         Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
@@ -159,7 +211,12 @@ public class ShopController {
         return "redirect:/payment";
     }
 
-    //for increase count of exist product in cart
+    /**
+     * for increase count of exist product in cart
+     * @param id - id of the product to update the count
+     * @param model  - for update attribute.
+     * @return html page of the shop
+     */
     @PostMapping("/increaseProduct")
     public String increaseProduct(@RequestParam("id") long id , Model model) {
         sessionCart.increase(id);
@@ -167,7 +224,12 @@ public class ShopController {
         return "redirect:/payment";
     }
 
-    //for decrease count of exist product in cart
+    /**
+     * for decrease count of exist product in cart
+     * @param id - id of the product to update the count
+     * @param model  - for update attribute.
+     * @return html page of the shop.
+     */
     @PostMapping("/decreaseProduct")
     public String decreaseProduct(@RequestParam("id") long id, Model model) {
         sessionCart.decrease(id);
@@ -175,6 +237,12 @@ public class ShopController {
         return "redirect:/payment";
     }
 
+    /**
+     * this get request delete the session.
+     * @param request -
+     * @param model - for update attribute.
+     * @return -Http servlet request.
+     */
     @GetMapping("/destroySession")
     public String destroySession(HttpServletRequest request ,Model model) {
         request.getSession().invalidate();

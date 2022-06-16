@@ -14,37 +14,58 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ *admin controller.
+ */
 
 @Controller
 public class AdminController {
 
-    /* inject via its type the product repo bean - a singleton */
+    //product service.
     @Autowired
     private ProductService productService;
 
+    //order service.
     @Autowired
     private OrderService orderService;
 
+    /**
+     * get the page of home page of admin
+     * @param model
+     * @return html page of admin index
+     */
     @GetMapping("/admin")
-    public String main(Product product, Model model) {
-        // the name "Products"  is bound to the VIEW
+    public String main( Model model) {
         model.addAttribute("products", productService.getProducts());
         return "admin/index";
     }
 
+    /**
+     * get sign up form.
+     * @return html page of add product.
+     */
     @GetMapping("/admin/add")
-    public String showSignUpForm(Product product, Model model) {
+    public String showSignUpForm() {
         return "admin/add-product";
     }
 
+    /**
+     * get request to see orders to admin.
+     * @param model
+     * @return html page of admin orders.
+     */
     @GetMapping("/admin/orders")
-    public String showOrders(OrderConfirm order, Model model) {
+    public String showOrders(Model model) {
         model.addAttribute("orders", orderService.findAllOrderByDate());
         totalOrderSum(model);
 
         return "admin/orders";
     }
 
+    /**
+     * this function calculate the order sun and update the attribute.
+     * @param model - the page to add attribute.
+     */
     public void totalOrderSum(Model model)
     {
         double sum = 0 ;
@@ -57,6 +78,13 @@ public class AdminController {
         model.addAttribute("totalOrdersSum", sum);
     }
 
+    /**
+     * post request to update the DB and add product.
+     * @param product - the product to add.
+     * @param result - the result of the page.
+     * @param model - the html page.
+     * @return if success return the home page of admin.
+     */
     @PostMapping("/admin/addproduct")
     public String addProduct(@Valid Product product, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -77,6 +105,12 @@ public class AdminController {
         return "admin/index";
     }
 
+    /**
+     * post request to get page of edit product
+     * @param id - id of the product to update
+     * @param model - html page to add attribute.
+     * @return html page of update product.
+     */
     @PostMapping("/admin/edit")
     public String editProduct(@RequestParam("id") long id, Model model) {
         Product product = productService.getProduct(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
@@ -86,6 +120,14 @@ public class AdminController {
         return "admin/update-product";
     }
 
+    /**
+     * post request of update product.
+     * @param id - id of the product to update
+     * @param product the product to update
+     * @param result  - the result
+     * @param model - for set attribute.
+     * @return
+     */
     @PostMapping("/admin/update/{id}")
     public String updateProduct(@PathVariable("id") long id, @Valid Product product, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -97,6 +139,12 @@ public class AdminController {
         return "admin/index";
     }
 
+    /**
+     * get request to delete product
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/admin/delete/{id}")
     public String deleteProduct(@PathVariable("id") long id, Model model) {
 
@@ -107,13 +155,10 @@ public class AdminController {
         return "admin/index";
     }
 
-    @GetMapping(value="/admin/json")
-    public String json (Model model) {
-        return "json";
-    }
+    
     /**
-     * a sample controller return the content of the DB in JSON format
-     * @return
+     * a sample controller return the list of the product of the DB in JSON format
+     * @return the list of the product.
      */
     @GetMapping(value="/admin/getjson")
     public @ResponseBody List<Product> getAll() {
