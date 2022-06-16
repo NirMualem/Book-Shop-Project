@@ -147,10 +147,10 @@ public class ShopController {
 
     //for increase count of exist product in cart
     @PostMapping("/increaseProduct")
-    public String increaseProduct(@RequestParam("id") long id, Model model) {
-        String errors = "";
+    public String increaseProduct(@RequestParam("id") long id,HttpServletRequest request , Model model) {
+        request.getSession().invalidate();
         sessionCart.increase(id);
-        addAttributesPayment(model, errors);
+        addAttributesPayment(model, "");
         return "redirect:/payment";
     }
 
