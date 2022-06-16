@@ -1,12 +1,14 @@
 package hac.ex4.controllers;
 
 import hac.ex4.beans.Cart;
+import hac.ex4.listeners.SessionListenerCounter;
 import hac.ex4.repo.OrderConfirm;
 import hac.ex4.repo.Product;
 import hac.ex4.repo.ProductUser;
 import hac.ex4.services.OrderService;
 import hac.ex4.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,9 @@ public class ShopController {
     @Autowired
     private ProductService productService;
 
+    @Resource(name="sessionListenerWithMetrics")
+    private ServletListenerRegistrationBean<SessionListenerCounter> metrics;
+
     @Autowired
     private OrderService orderService;
     // injection by ctor: match by name
@@ -33,6 +38,7 @@ public class ShopController {
     @GetMapping("/")
     public String main(Product product, Model model) {
         // the name "Products"  is bound to the VIEW
+        System.out.println(metrics.getListener().getTotalActiveSession());
         String errors = "" ;
         model.addAttribute("products", productService.getProducts());
         model.addAttribute("topProducts", productService.getTopDiscountProducts());

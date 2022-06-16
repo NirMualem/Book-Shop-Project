@@ -44,11 +44,11 @@ public class Product implements Serializable {
     }
 
     public Product(Product product) {
-        this.name = product.getName();
+        this.name = product.getName().trim();
         this.quantity = product.getQuantity();
         this.price = product.getPrice();
         this.discount = product.getDiscount();
-        this.image = product.getImage();
+        this.image = product.getImage().trim();
         this.id = product.getId() ;
     }
 
@@ -78,10 +78,10 @@ public class Product implements Serializable {
         this.id = id;
     }
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
     public void setImage(String image) {
-        this.image = image;
+        this.image = image.trim();
     }
     public void setQuantity(int quantity) {
         this.quantity = quantity;
