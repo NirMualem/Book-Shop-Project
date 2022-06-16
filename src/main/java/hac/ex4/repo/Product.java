@@ -19,26 +19,44 @@ import java.io.Serializable;
 @Entity
 public class Product implements Serializable {
 
+    /**
+     * generate id to product
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;//generate id to product
+    private long id;
 
+    /**
+     * name of book between 2 and 20 chars
+     */
     @NotEmpty(message = "Name is mandatory")
     @Size(max=20,min=2, message="name must be 2 and 20 char")
-    private String name;//name of book between 2 and 20 chars
+    private String name;
 
+    /**
+     * image url
+     */
     @URL(message = "url must be valid. keep empty for default image")
-    private String image;//image url
+    private String image;
 
+    /**
+     * quantity in store stock
+     */
     @PositiveOrZero(message="must be equal or greater than 0 , and integer")
-    private int quantity;//quantity in store stock
+    private int quantity;
 
+    /**
+     * price of product
+     */
     @Positive(message="must be greater than 0")
-    private double price;//price of product
+    private double price;
 
+    /**
+     * discount on product
+     */
     @PositiveOrZero(message="must be between 0 to 99")
     @Max(value=99, message="must be between 0 to 99")
-    private double discount ;//discount on product
+    private double discount ;
 
     /**
      * default ctor

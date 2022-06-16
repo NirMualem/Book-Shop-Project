@@ -17,7 +17,10 @@ import java.io.Serializable;
 @Component
 public class ProductUser extends Product implements Serializable {
 
-    private int count;//save the amount specific user want from the product
+    /**
+     * save the amount specific user want from the product
+     */
+    private int count;
 
     /**
      * default ctor

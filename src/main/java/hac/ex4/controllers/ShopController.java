@@ -197,7 +197,7 @@ public class ShopController {
      * @param id - id of the product to delete.
      * @param request  -Http servlet request.
      * @param model - for update attribute.
-     * @return
+     * @return return payment html page.
      */
     @PostMapping("/deleteProduct")
     public String deleteProduct(@RequestParam("id") long id,HttpServletRequest request, Model model) {
@@ -239,7 +239,7 @@ public class ShopController {
 
     /**
      * this get request delete the session.
-     * @param request -
+     * @param request - http servlet request
      * @param model - for update attribute.
      * @return -Http servlet request.
      */

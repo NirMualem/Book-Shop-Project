@@ -44,9 +44,11 @@ public class ProductService {
         repository.delete(prod);
     }
 
+
     /**
      * get product by id from DB
      * @param id of product to get from DB
+     * @return the product in the db.
      */
     public Optional<Product> getProduct(long id) {
         return repository.findById(id);
@@ -70,6 +72,7 @@ public class ProductService {
 
     /**
      * get product by sub-title from DB
+     * @param title title or sub-title.
      * @return product by sub-title from DB
      */
     public List<Product> searchByTitle(String title) {

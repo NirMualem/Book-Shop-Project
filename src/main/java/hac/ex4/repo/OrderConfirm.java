@@ -16,17 +16,29 @@ import java.sql.Timestamp;
 @Entity
 public class OrderConfirm implements Serializable {
 
+    /**
+     * generate id to order
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;//generate id to order
+    private long id;
 
+    /**
+     * save order total price
+     */
     @Positive(message="must be greater than 0")
-    private double orderSum;//save order total price
+    private double orderSum;
 
-    private String orderUserName;//save the order username
+    /**
+     * save the order username
+     */
+    private String orderUserName;
 
+    /**
+     * timestamp when order set
+     */
     @CreationTimestamp
-    private Timestamp orderDate;//timestamp when order set
+    private Timestamp orderDate;
 
     /**
      * default ctor
@@ -77,7 +89,7 @@ public class OrderConfirm implements Serializable {
 
     /**
      * set function for id
-     * @param id
+     * @param id - id of the order.
      */
     public void setId(long id) {
         this.id = id;
@@ -85,7 +97,7 @@ public class OrderConfirm implements Serializable {
 
     /**
      * set function for order sum
-     * @param orderSum
+     * @param orderSum - sum of the order.
      */
     public void setOrderSum(double orderSum) {
         this.orderSum = orderSum;
@@ -93,7 +105,7 @@ public class OrderConfirm implements Serializable {
 
     /**
      * set function for order Date
-     * @param orderDate
+     * @param orderDate - date of the order
      */
     public void setOrderDate(Timestamp orderDate) {
         this.orderDate = orderDate;
@@ -101,7 +113,7 @@ public class OrderConfirm implements Serializable {
 
     /**
      * set function for order UserName
-     * @param orderUserName
+     * @param orderUserName - name of the that create the order.
      */
     public void setOrderUserName(String orderUserName) {
         this.orderUserName = orderUserName;

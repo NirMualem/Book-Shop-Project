@@ -12,6 +12,9 @@ in this store admin can manage the storage and see
 all orders. the user can buy books </a>.</p>
 
 
+<h1>java doc</h1>
+<p>src/main/java/hac/ex4/index.html</p>
+
 <h1>log in</h1>
 <p>admin username is "admin" with password "password"</p>
 

@@ -31,7 +31,7 @@ public class AdminController {
 
     /**
      * get the page of home page of admin
-     * @param model
+     * @param model -  for update attribute.
      * @return html page of admin index
      */
     @GetMapping("/admin")
@@ -51,7 +51,7 @@ public class AdminController {
 
     /**
      * get request to see orders to admin.
-     * @param model
+     * @param model -  for update attribute.
      * @return html page of admin orders.
      */
     @GetMapping("/admin/orders")
@@ -126,7 +126,7 @@ public class AdminController {
      * @param product the product to update
      * @param result  - the result
      * @param model - for set attribute.
-     * @return
+     * @return html page of update product
      */
     @PostMapping("/admin/update/{id}")
     public String updateProduct(@PathVariable("id") long id, @Valid Product product, BindingResult result, Model model) {
@@ -141,9 +141,9 @@ public class AdminController {
 
     /**
      * get request to delete product
-     * @param id
-     * @param model
-     * @return
+     * @param id - id of the product to delete.
+     * @param model- for update attribute.
+     * @return html page of the shop.
      */
     @GetMapping("/admin/delete/{id}")
     public String deleteProduct(@PathVariable("id") long id, Model model) {
@@ -155,7 +155,7 @@ public class AdminController {
         return "admin/index";
     }
 
-    
+
     /**
      * a sample controller return the list of the product of the DB in JSON format
      * @return the list of the product.

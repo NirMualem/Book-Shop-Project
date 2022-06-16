@@ -16,10 +16,14 @@ import java.util.ArrayList;
 @Component
 public class Cart implements Serializable {
 
-    //hold array of productUser
+    /**
+     * hold array of productUser
+     */
     private ArrayList<ProductUser> productsCart;
 
-    //ctor
+    /**
+     * ctor
+     */
     public Cart() {
         this.productsCart = new ArrayList<>();
     }
