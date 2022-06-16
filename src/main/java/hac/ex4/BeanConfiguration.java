@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 /**
  * class that add listener class to track the total sessions active
  */
-
 @Configuration
 public class BeanConfiguration {
 

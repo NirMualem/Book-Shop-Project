@@ -17,15 +17,18 @@ import java.util.List;
 /**
  *admin controller.
  */
-
 @Controller
 public class AdminController {
-
-    //product service.
+    
+    /**
+     * product service.
+     */
     @Autowired
     private ProductService productService;
 
-    //order service.
+    /**
+     * order service.
+     */
     @Autowired
     private OrderService orderService;
 

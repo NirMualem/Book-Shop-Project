@@ -24,23 +24,31 @@ import java.util.ArrayList;
 /**
  * shop controller.
  */
-
 @Controller
 public class ShopController {
 
-    //product service
+    /**
+     * product service
+     */
+
     @Autowired
     private ProductService productService;
 
-    //order service.
+    /**
+     * order service.
+     */
     @Autowired
     private OrderService orderService;
 
-    //for get the session counter.
+    /**
+     * for get the session counter.
+     */
     @Resource(name="sessionListenerWithMetrics")
     private ServletListenerRegistrationBean<SessionListenerCounter> metrics;
 
-    //create session cart.
+    /**
+     * create session cart.
+     */
     @Resource(name = "sessionBean")
     private Cart sessionCart;
 
