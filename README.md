@@ -14,6 +14,7 @@ all orders. the user can buy books </a>.</p>
 
 <h1>java doc</h1>
 <p>src/main/java/hac/ex4/index.html</p>
+<p> open and start using IdeaProjects<p>
 
 <h1>log in</h1>
 <p>admin username is "admin" with password "password"</p>
